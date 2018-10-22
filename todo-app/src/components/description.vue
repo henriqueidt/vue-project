@@ -1,46 +1,46 @@
 <template>
-  <div class="fourth-component">
-  <textarea  class="description" cols="30"  rows="10" v-model="description" placeholder="description"/>
+  <div class='fourth-component'>
+    <textarea  class='description' cols='30'  rows='10' v-model='description' placeholder='description'/>
   </div>
 </template>
 
-<script type = "text/javascript" >
+<script type = 'text/javascript' >
 
-export default {
-  props: {
-    errors: {
-      type: Array
-    }
-  },
-  data: () => {
-    return {
-      description: '',
+  export default {
+    props: {
+      errors: {
+        type: Array
       }
-  },
-  updated() {
-    var bad_words=new Array("death","kill","murder","txai","bitch","fuck");
-    var flag = false
-    if(this.description.length > 200) {
-      if((this.errors.indexOf("Invalid description") == -1) && this.description.length != 0) {
-        this.errors.push("Invalid description")
+    },
+    data() {
+      return {
+        description: '',
+        bad_words: ['death','kill','murder','txai','bitch','fuck']
       }
-    } else if(this.errors.indexOf("Invalid description") != -1) {
-      this.errors.splice(this.errors.indexOf("Invalid description"),1)
-    }
-    for(var i = 0; i < bad_words.length; i++) {
-      var badWord = bad_words[i];
-      if(this.description.toLowerCase().indexOf(badWord.toString()) != -1){
-          flag = true
-        if(this.errors.indexOf("Bad language") == -1) {
-        this.errors.push("Bad language")
+    },
+    updated() {
+      let flag = false
+      if (this.description.length > 200) {
+        if ((this.errors.indexOf('Invalid description') == -1) && this.description.length != 0) {
+          this.errors.push('Invalid description')
         }
+      } else if (this.errors.indexOf('Invalid description') != -1) {
+        this.errors.splice(this.errors.indexOf('Invalid description'), 1)
       }
+      this.bad_words.forEach ((item) =>  {
+        let badWord = item;
+        if (this.description.toLowerCase().indexOf(badWord.toString()) != -1){
+            flag = true
+          if (this.errors.indexOf('Bad language') == -1) {
+          this.errors.push('Bad language')
+          }
+        }
+      });
+      if ((this.errors.indexOf('Bad language') != -1) && flag == false) {
+        this.errors.splice(this.errors.indexOf('Bad language'), 1)
       }
-      if((this.errors.indexOf("Bad language") != -1) && flag == false) {
-        this.errors.splice(this.errors.indexOf("Bad language"),1)
-      }
-}
-};
+    }
+  };
 </script>
 <style>
   .fourth-component {
